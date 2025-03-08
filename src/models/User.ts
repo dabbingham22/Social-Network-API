@@ -3,7 +3,7 @@ import { Schema, model, type Document } from 'mongoose';
 interface Iuser extends Document {
     username: string,
     email: string,
-    thoughts: [],
+    thoughts: Schema.Types.ObjectId[],
     friends: Schema.Types.ObjectId[],
 
 }
@@ -18,9 +18,12 @@ const userSchema = new Schema<Iuser>(
             type: String,
             required: true,
         },
-        thoughts: {
-
-        },
+        thoughts: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'thought',
+            },
+        ],
         friends: [
             {
                 type: Schema.Types.ObjectId,
