@@ -7,25 +7,42 @@ interface Ithought extends Document {
     reactions: Schema.Types.ObjectId[]
 }
 
+const reactionSchema = new Schema({
+    reactionBody: {
+        type: String,
+        required: true,
+        maxlength: 280,
+    },
+    username: {
+        type: String,
+        required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        get: (timestamp: number) => new Date(timestamp).toLocaleString(),
+    },
+});
+
+
 const thoughtSchema = new Schema<Ithought>(
     {
         thoughtText: {
             type: String,
-            required: true
+            required: true,
+            minlength: 1,
+            maxlength: 280,
         },
         createdAt: {
-            type: Date
+            type: Date,
+            default: Date.now,
+            //get: (timestamp: number) => new Date(timestamp).toLocaleString(),
         },
         username: {
             type: String,
-            required: true
+            required: true,
         },
-        reactions: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'reaction',
-            },
-        ]
+        reactions: [reactionSchema],
 })
 
 const Thought = model<Ithought>('Thought', thoughtSchema);

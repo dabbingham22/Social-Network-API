@@ -12,10 +12,13 @@ const userSchema = new Schema<Iuser>(
     {
         username: {
             type: String,
+            unique: true,
             required: true,
+            trim: true,
         },
         email: {
             type: String,
+            unique: true,
             required: true,
         },
         thoughts: [
@@ -27,11 +30,13 @@ const userSchema = new Schema<Iuser>(
         friends: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'friend',
+                ref: 'user',
             },
-        ]
+        ],
+    },
+);
 
-});
+
 
 const User = model<Iuser>('User', userSchema);
 

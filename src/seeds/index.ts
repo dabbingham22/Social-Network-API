@@ -10,7 +10,7 @@
 //   // Create empty array to hold the users
 //   const users = [];
 
-//   // Loop 20 times -- add users to the students array
+//   // Loop 20 times -- add users to the users array
 //   for (let i = 0; i < 20; i++) {
 //     // Get some random thought objects using a helper function that we imported from ./data
 //     const thoughts = getRandomThoughts(20);
@@ -22,10 +22,10 @@
 //     });
 //   }
 
-//   // Add students to the collection and await the results
+//   // Add users to the collection and await the results
 //   const userData = await User.create(users);
 
-//   // Add courses to the collection and await the results
+//   // Add user to the collection and await the results
 //   await User.create({
 //     username: 'markDankberg',
 //     thoughts: [...userData.map(({ _id }: { [key: string]: any }) => _id)],
