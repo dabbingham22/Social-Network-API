@@ -1,7 +1,7 @@
 import db from '../config/connection.js';
 import { User, Thought } from '../models/index.js';
 import cleanDB from './cleanDB.js';
-import { getRandomUsername, getRandomThoughts } from './data.js';
+import { getRandomUsername, getRandomArrItem, getRandomEmail } from './data.js';
 
 try {
   await db();
@@ -11,14 +11,16 @@ try {
   const users = [];
 
   // Loop 20 times -- add users to the users array
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 1; i++) {
     // Get some random thought objects using a helper function that we imported from ./data
-    const thoughts = getRandomThoughts(20);
+    const thoughts = [getRandomArrItem(Thought)];
     const username = getRandomUsername();
+    const email = getRandomEmail();
 
     users.push({
       username,
       thoughts,
+      email,
     });
   }
 
@@ -28,6 +30,7 @@ try {
   // Add user to the collection and await the results
   await User.create({
     username: 'markDankberg',
+    email: 'dankman@dank.com',
     thoughts: [...userData.map(({ _id }: { [key: string]: any }) => _id)],
   });
 

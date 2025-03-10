@@ -36,15 +36,47 @@ const usernames = [
     "Data structures are crucial.", 
     "Algorithms fuel performance."
   ];
+
+  const emails = [
+    "john.doe@example.com",
+    "jane.smith@email.com",
+    "alex.johnson@domain.org",
+    "emily.brown@company.net",
+    "michael.wilson@webmail.com",
+    "sarah.davis@service.io",
+    "chris.martin@business.co",
+    "laura.taylor@workplace.org",
+    "daniel.anderson@techhub.dev",
+    "olivia.thomas@startup.inc",
+    "ryan.moore@enterprise.biz",
+    "megan.white@corporate.com",
+    "kevin.jones@industry.net",
+    "ashley.miller@firm.org",
+    "brian.clark@organization.io",
+    "natalie.roberts@platform.dev",
+    "jason.lee@consulting.co",
+    "hannah.hall@creative.agency",
+    "david.king@digital.solutions",
+    "sophia.walker@global.inc",
+    "justin.evans@network.biz",
+    "rachel.adams@online.org",
+    "tyler.baker@group.net",
+    "katie.morris@support.io",
+    "eric.carter@company.dev"
+  ];
   
   // Get a random item given an array
   export const getRandomArrItem = (arr: any) => arr[Math.floor(Math.random() * arr.length)];
   
-  // Gets a random full name
+  // Gets a random username
   export const getRandomUsername = () =>
-    `${getRandomArrItem(usernames)} ${getRandomArrItem(usernames)}`;
+    `${getRandomArrItem(usernames)}`;
+
+  // Gets a random email
+  export const getRandomEmail = () => 
+    `${getRandomArrItem(emails)}`;
   
-  // Function to generate random assignments that we can add to student object.
+  // Function to generate random thoughts that we can add to user object.
   export const getRandomThoughts = (int: number) => {
     const results = [];
     for (let i = 0; i < int; i++) {
