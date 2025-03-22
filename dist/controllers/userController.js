@@ -30,10 +30,11 @@ export const getUserById = async (req, res) => {
     }
 };
 export const createUser = async (req, res) => {
-    const { user } = req.body;
+    const { username, email } = req.body;
     try {
         const newUser = await User.create({
-            user
+            username,
+            email
         });
         res.status(201).json(newUser);
     }

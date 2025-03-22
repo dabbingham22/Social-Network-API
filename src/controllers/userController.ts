@@ -17,7 +17,8 @@ export const getUserById = async (req: Request, res: Response) => {
     try {
       const user = await User.findById(userId);
       if(user) {
-        res.json(user);
+        res.json(
+          user);
       } else {
         res.status(404).json({
           message: 'User cannot found'
@@ -31,10 +32,11 @@ export const getUserById = async (req: Request, res: Response) => {
   };
 
 export const createUser = async (req: Request, res: Response) => {
-  const { user } = req.body;
+  const { username, email } = req.body;
   try {
     const newUser = await User.create({
-      user
+      username,
+      email
     });
     res.status(201).json(newUser);
   } catch (error: any) {
