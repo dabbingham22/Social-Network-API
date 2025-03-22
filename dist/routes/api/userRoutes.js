@@ -10,6 +10,7 @@ router.route('/:userId')
     .get(getUserById)
     .put(updateUser)
     .delete(deleteUser);
-router.route('/:userId/friends/:friendsId')
+router.route('/:userId/friends')
+    //router.route('/:userId/friends/:friendsId')
     .post(addFriend);
 export { router as userRouter };

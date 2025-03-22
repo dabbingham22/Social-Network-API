@@ -22,7 +22,9 @@ router.route('/:userId')
 .delete(deleteUser)
 ;
 
-router.route('/:userId/friends/:friendsId')
+router.route('/:userId/friends')
+
+//router.route('/:userId/friends/:friendsId')
 .post(addFriend)
 //.delete(removeFriend)
 ;

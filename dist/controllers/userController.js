@@ -81,7 +81,11 @@ export const addFriend = async (req, res) => {
     console.log('You are adding a friend');
     console.log(req.body);
     try {
-        const user = await User.findOneAndUpdate({ _id: req.params.userId }, { $addToSet: { friends: req.body } }, { runValidators: true, new: true });
+        const { friendId } = req.body;
+        if (!friendId) {
+            return res.status(400).json({ message: 'Friend ID is required' });
+        }
+        const user = await User.findOneAndUpdate({ _id: req.params.userId }, { $addToSet: { friends: friendId } }, { runValidators: true, new: true });
         if (!user) {
             return res
                 .status(404)
