@@ -18,7 +18,8 @@ export const getThoughtById = async (req: Request, res: Response) => {
     try {
       const thought = await Thought.findById(thoughtId);
       if(thought) {
-        res.json(thought);
+        res.json(
+            thought);
       } else {
         res.status(404).json({
           message: 'Thought not found'
@@ -31,7 +32,7 @@ export const getThoughtById = async (req: Request, res: Response) => {
     }
   };
 
-  export const createThought = async (req: Request, res: Response) => {
+export const createThought = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.create(req.body);
         res.json(thought);
@@ -39,3 +40,23 @@ export const getThoughtById = async (req: Request, res: Response) => {
         res.status(500).json(err);
     }
 }
+
+export const deleteThought = async (req: Request, res: Response) => {
+    try {
+      const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId});
+      
+      if(!thought) {
+        res.status(404).json({
+          message: 'No thought with that ID'
+        });
+      } else {
+        // await Reaction.deleteMany({ _id: { $in: thought.reactions } });
+        res.json({ message: 'Thought and reactions deleted!' });
+      }
+      
+    } catch (error: any) {
+      res.status(500).json({
+        message: error.message
+      });
+    }
+  };
