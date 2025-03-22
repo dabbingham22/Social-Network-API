@@ -7,7 +7,7 @@ import {
   updateUser,
   deleteUser,
   addFriend,
-  //removeFriend,
+  removeFriend,
 } from '../../controllers/userController.js';
 
 
@@ -23,10 +23,10 @@ router.route('/:userId')
 ;
 
 router.route('/:userId/friends')
-
-//router.route('/:userId/friends/:friendsId')
 .post(addFriend)
-//.delete(removeFriend)
+
+router.route('/:userId/friends/:friendsId')
+.delete(removeFriend)
 ;
 
 export { router as userRouter };

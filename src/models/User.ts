@@ -42,7 +42,12 @@ const userSchema = new Schema<Iuser>(
     },
 );
 
+userSchema
+  .virtual('friendCount')
 
+  .get(function (this:Iuser) {
+    return this.friends.length;
+  });
 
 const User = model<Iuser>('User', userSchema);
 
