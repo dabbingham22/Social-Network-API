@@ -11,7 +11,7 @@ try {
   const users = [];
 
   // Loop 20 times -- add users to the users array
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 3; i++) {
     // Get some random thought objects using a helper function that we imported from ./data
     const thoughts = [getRandomArrItem(Thought)];
     const username = getRandomUsername();
