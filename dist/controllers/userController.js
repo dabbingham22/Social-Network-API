@@ -77,3 +77,19 @@ export const deleteUser = async (req, res) => {
         });
     }
 };
+export const addFriend = async (req, res) => {
+    console.log('You are adding a friend');
+    console.log(req.body);
+    try {
+        const user = await User.findOneAndUpdate({ _id: req.params.userId }, { $addToSet: { friends: req.body } }, { runValidators: true, new: true });
+        if (!user) {
+            return res
+                .status(404)
+                .json({ message: 'No user found with that ID :(' });
+        }
+        return res.json(user);
+    }
+    catch (err) {
+        return res.status(500).json(err);
+    }
+};
