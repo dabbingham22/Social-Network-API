@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Thought } from '../models/index.js';
+import { Thought, User } from '../models/index.js';
 
 // export const reactionCount = async () => {
 //   const numberOfReactions = await Thought.reactions.aggregate()
@@ -43,7 +43,12 @@ export const createThought = async (req: Request, res: Response) => {
   console.log(req.body);
     try {
         const thought = await Thought.create(req.body);
-        res.json(thought);
+        await User.findByIdAndUpdate(
+          req.body.userId,
+          { $push: { thoughts: thought._id } },
+          { new: true }
+      );
+      res.json(thought);
     } catch (err) {
         res.status(500).json(err);
     }

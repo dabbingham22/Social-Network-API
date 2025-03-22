@@ -1,4 +1,4 @@
-import { Thought } from '../models/index.js';
+import { Thought, User } from '../models/index.js';
 // export const reactionCount = async () => {
 //   const numberOfReactions = await Thought.reactions.aggregate()
 //       .count('reactionCount');
@@ -39,6 +39,7 @@ export const createThought = async (req, res) => {
     console.log(req.body);
     try {
         const thought = await Thought.create(req.body);
+        await User.findByIdAndUpdate(req.body.userId, { $push: { thoughts: thought._id } }, { new: true });
         res.json(thought);
     }
     catch (err) {
@@ -68,7 +69,7 @@ export const deleteThought = async (req, res) => {
             });
         }
         else {
-            // await Reaction.deleteMany({ _id: { $in: thought.reactions } });
+            //await Reaction.deleteMany({ _id: { $in: thought.reactions } });
             res.json({ message: 'Thought and reactions deleted!' });
         }
     }
