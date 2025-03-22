@@ -1,5 +1,9 @@
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 const reactionSchema = new Schema({
+    reactionId: {
+        type: Schema.Types.ObjectId,
+        default: () => new Types.ObjectId(),
+    },
     reactionBody: {
         type: String,
         required: true,
@@ -32,6 +36,11 @@ const thoughtSchema = new Schema({
         required: true,
     },
     reactions: [reactionSchema],
+}, {
+    toJSON: {
+        getters: true,
+    },
+    id: false,
 });
 const Thought = model('Thought', thoughtSchema);
 export default Thought;

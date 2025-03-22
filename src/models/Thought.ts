@@ -1,4 +1,4 @@
-import { Schema, model, type Document } from 'mongoose';
+import { Schema, Types, model, type Document } from 'mongoose';
 
 interface Ithought extends Document {
     thoughtText: String,
@@ -8,6 +8,10 @@ interface Ithought extends Document {
 }
 
 const reactionSchema = new Schema({
+    reactionId: {
+        type: Schema.Types.ObjectId,
+        default: () => new Types.ObjectId(),
+    },
     reactionBody: {
         type: String,
         required: true,
@@ -43,7 +47,14 @@ const thoughtSchema = new Schema<Ithought>(
             required: true,
         },
         reactions: [reactionSchema],
-})
+}, 
+{
+    toJSON: {
+        getters: true,
+    },
+    id: false, 
+}
+);
 
 const Thought = model<Ithought>('Thought', thoughtSchema);
 

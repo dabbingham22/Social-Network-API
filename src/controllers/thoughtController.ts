@@ -59,3 +59,52 @@ export const deleteThought = async (req: Request, res: Response) => {
       });
     }
   };
+
+  export const addReaction = async (req: Request, res: Response) => {
+    console.log('You are adding an reaction');
+    console.log(req.body);
+    try {
+        const thought = await Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $addToSet: { reaction: req.body } },
+            { runValidators: true, new: true }
+        );
+
+        if (!thought) {
+            return res
+                .status(404)
+                .json({ message: 'No thought found with that ID :(' });
+        }
+
+        return res.json(thought);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+}
+
+// export const deleteReaction = async (req: Request, res: Response) => {
+//   try {
+//       const reaction = await Reaction.findOneAndDelete({ _id: req.params.reactionId });
+
+//       if (!reaction) {
+//           return res.status(404).json({ message: 'No such reaction exists' });
+//       }
+
+//       const thought = await Thought.findOneAndUpdate(
+//           { students: req.params.reactionId },
+//           { $pull: { reactions: req.params.reactionId } },
+//           { new: true }
+//       );
+
+//       if (!thought) {
+//           return res.status(404).json({
+//               message: 'Reaction deleted, but no thought found',
+//           });
+//       }
+
+//       return res.json({ message: 'Reaction successfully deleted' });
+//   } catch (err) {
+//       console.log(err);
+//       return res.status(500).json(err);
+//   }
+// }
