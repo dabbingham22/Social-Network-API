@@ -32,6 +32,8 @@ export const getThoughtById = async (req: Request, res: Response) => {
   };
 
 export const createThought = async (req: Request, res: Response) => {
+  console.log('You are creating a thought');
+  console.log(req.body);
     try {
         const thought = await Thought.create(req.body);
         res.json(thought);
@@ -39,6 +41,25 @@ export const createThought = async (req: Request, res: Response) => {
         res.status(500).json(err);
     }
 }
+export const updateThought = async (req: Request, res: Response) => {
+  try {
+    const thought = await Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    );
+
+    if (!thought) {
+      res.status(404).json({ message: 'No thought with this id!' });
+    }
+
+    res.json(thought)
+  } catch (error: any) {
+    res.status(400).json({
+      message: error.message
+    });
+  }
+};
 
 export const deleteThought = async (req: Request, res: Response) => {
     try {
@@ -66,7 +87,7 @@ export const deleteThought = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $addToSet: { reaction: req.body } },
+            { $addToSet: { reactions: req.body } },
             { runValidators: true, new: true }
         );
 
@@ -82,29 +103,29 @@ export const deleteThought = async (req: Request, res: Response) => {
     }
 }
 
-// export const deleteReaction = async (req: Request, res: Response) => {
-//   try {
-//       const reaction = await Reaction.findOneAndDelete({ _id: req.params.reactionId });
+export const deleteReaction = async (req: Request, res: Response) => {
+  try {
+      const reaction = await Thought.findOneAndDelete({ _id: req.params.reactionId });
 
-//       if (!reaction) {
-//           return res.status(404).json({ message: 'No such reaction exists' });
-//       }
+      if (!reaction) {
+          return res.status(404).json({ message: 'No such reaction exists' });
+      }
 
-//       const thought = await Thought.findOneAndUpdate(
-//           { students: req.params.reactionId },
-//           { $pull: { reactions: req.params.reactionId } },
-//           { new: true }
-//       );
+      const thought = await Thought.findOneAndUpdate(
+          { students: req.params.reactionId },
+          { $pull: { reactions: req.params.reactionId } },
+          { new: true }
+      );
 
-//       if (!thought) {
-//           return res.status(404).json({
-//               message: 'Reaction deleted, but no thought found',
-//           });
-//       }
+      if (!thought) {
+          return res.status(404).json({
+              message: 'Reaction deleted, but no thought found',
+          });
+      }
 
-//       return res.json({ message: 'Reaction successfully deleted' });
-//   } catch (err) {
-//       console.log(err);
-//       return res.status(500).json(err);
-//   }
-// }
+      return res.json({ message: 'Reaction successfully deleted' });
+  } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
+  }
+}

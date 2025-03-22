@@ -30,12 +30,28 @@ export const getThoughtById = async (req, res) => {
     }
 };
 export const createThought = async (req, res) => {
+    console.log('You are creating a thought');
+    console.log(req.body);
     try {
         const thought = await Thought.create(req.body);
         res.json(thought);
     }
     catch (err) {
         res.status(500).json(err);
+    }
+};
+export const updateThought = async (req, res) => {
+    try {
+        const thought = await Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { $set: req.body }, { runValidators: true, new: true });
+        if (!thought) {
+            res.status(404).json({ message: 'No thought with this id!' });
+        }
+        res.json(thought);
+    }
+    catch (error) {
+        res.status(400).json({
+            message: error.message
+        });
     }
 };
 export const deleteThought = async (req, res) => {
@@ -61,7 +77,7 @@ export const addReaction = async (req, res) => {
     console.log('You are adding an reaction');
     console.log(req.body);
     try {
-        const thought = await Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { $addToSet: { reaction: req.body } }, { runValidators: true, new: true });
+        const thought = await Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { $addToSet: { reactions: req.body } }, { runValidators: true, new: true });
         if (!thought) {
             return res
                 .status(404)
@@ -70,6 +86,25 @@ export const addReaction = async (req, res) => {
         return res.json(thought);
     }
     catch (err) {
+        return res.status(500).json(err);
+    }
+};
+export const deleteReaction = async (req, res) => {
+    try {
+        const reaction = await Thought.findOneAndDelete({ _id: req.params.reactionId });
+        if (!reaction) {
+            return res.status(404).json({ message: 'No such reaction exists' });
+        }
+        const thought = await Thought.findOneAndUpdate({ students: req.params.reactionId }, { $pull: { reactions: req.params.reactionId } }, { new: true });
+        if (!thought) {
+            return res.status(404).json({
+                message: 'Reaction deleted, but no thought found',
+            });
+        }
+        return res.json({ message: 'Reaction successfully deleted' });
+    }
+    catch (err) {
+        console.log(err);
         return res.status(500).json(err);
     }
 };
