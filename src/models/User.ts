@@ -34,6 +34,12 @@ const userSchema = new Schema<Iuser>(
             },
         ],
     },
+    {
+        toJSON: {
+            virtuals: true,
+        },
+        timestamps: true
+    },
 );
 
 

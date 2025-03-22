@@ -1,4 +1,9 @@
 import { Thought } from '../models/index.js';
+// export const reactionCount = async () => {
+//   const numberOfReactions = await Thought.reactions.aggregate()
+//       .count('reactionCount');
+//   return numberOfReactions;
+// }
 export const getAllThoughts = async (_req, res) => {
     try {
         const thoughts = await Thought.find();
@@ -91,14 +96,10 @@ export const addReaction = async (req, res) => {
 };
 export const deleteReaction = async (req, res) => {
     try {
-        const reaction = await Thought.findOneAndDelete({ _id: req.params.reactionId });
-        if (!reaction) {
-            return res.status(404).json({ message: 'No such reaction exists' });
-        }
-        const thought = await Thought.findOneAndUpdate({ students: req.params.reactionId }, { $pull: { reactions: req.params.reactionId } }, { new: true });
+        const thought = await Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { $pull: { reactions: { reactionId: req.params.reactionId } } }, { runValidators: true, new: true });
         if (!thought) {
             return res.status(404).json({
-                message: 'Reaction deleted, but no thought found',
+                message: 'No thought found with that ID',
             });
         }
         return res.json({ message: 'Reaction successfully deleted' });

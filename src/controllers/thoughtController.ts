@@ -1,6 +1,13 @@
 import { Request, Response } from 'express';
 import { Thought } from '../models/index.js';
 
+// export const reactionCount = async () => {
+//   const numberOfReactions = await Thought.reactions.aggregate()
+//       .count('reactionCount');
+//   return numberOfReactions;
+// }
+
+
 export const getAllThoughts = async (_req: Request, res: Response) => {
     try {
         const thoughts = await Thought.find();
@@ -70,7 +77,7 @@ export const deleteThought = async (req: Request, res: Response) => {
           message: 'No thought with that ID'
         });
       } else {
-        // await Reaction.deleteMany({ _id: { $in: thought.reactions } });
+        //await Reaction.deleteMany({ _id: { $in: thought.reactions } });
         res.json({ message: 'Thought and reactions deleted!' });
       }
       
@@ -104,22 +111,16 @@ export const deleteThought = async (req: Request, res: Response) => {
 }
 
 export const deleteReaction = async (req: Request, res: Response) => {
-  try {
-      const reaction = await Thought.findOneAndDelete({ _id: req.params.reactionId });
-
-      if (!reaction) {
-          return res.status(404).json({ message: 'No such reaction exists' });
-      }
-
+ try {
       const thought = await Thought.findOneAndUpdate(
-          { students: req.params.reactionId },
-          { $pull: { reactions: req.params.reactionId } },
-          { new: true }
+          { _id: req.params.thoughtId },
+          { $pull: { reactions: { reactionId: req.params.reactionId } } },
+          { runValidators: true, new: true }
       );
 
       if (!thought) {
           return res.status(404).json({
-              message: 'Reaction deleted, but no thought found',
+              message: 'No thought found with that ID',
           });
       }
 
