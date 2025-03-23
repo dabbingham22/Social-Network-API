@@ -125,9 +125,10 @@ export const addFriend = async (req: Request, res: Response) => {
 
 export const removeFriend = async (req: Request, res: Response) => {
   try {
+      console.log( req.params)
        const user = await User.findOneAndUpdate(
            { _id: req.params.userId },
-           { $pull: { friends: req.params.friendId } },
+           { $pull: { friends: req.params.friendsId } },
            { runValidators: true, new: true }
        );
  
@@ -137,7 +138,6 @@ export const removeFriend = async (req: Request, res: Response) => {
            });
        }
        return res.json({ message: 'Friend successfully removed' })
-       console.log(req.body)
        ;
    } catch (err) {
        console.log(err);
